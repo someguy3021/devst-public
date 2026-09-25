@@ -11,7 +11,14 @@ AI agents write most of the code.
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 [![docs-check](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml/badge.svg)](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml)
 
-![devst desktop companion](assets/screenshots/hero.png)
+![devst desktop companion — environment recon](assets/screenshots/hero.png)
+
+| Now panel | Close-session gate | Freeze tree |
+|---|---|---|
+| !["Now" panel](assets/screenshots/now.png) | ![Session close with gates](assets/screenshots/session.png) | ![Freeze registry tree](assets/screenshots/freeze.png) |
+
+*Screenshots show the desktop companion (English interface, dark theme) working
+against a real repository.*
 
 ## Why
 
@@ -64,6 +71,10 @@ CI ──▶ docs conventions + environment freshness on every push
 The philosophy underneath is **detect, don't block**: the CLI lints, the skill
 teaches, hooks enforce — warnings first, humans always decide. The full methodology
 is described in [docs/methodology.md](docs/methodology.md).
+
+### CLI in action
+
+![devst check and devst status — real CLI output](assets/screenshots/terminal.png)
 
 ## Architecture in one glance
 
