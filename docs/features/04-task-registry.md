@@ -1,5 +1,7 @@
 # Feature 04: Task registry — linked task objects, timers, gates, board
 
+> [Русская версия](../ru/features/04-task-registry.md)
+
 > **Status:** Stages 0–6 done (ADR-017; sessions 16–19); stage 7 — registry task T-5 · **Updated:** 2026-09-11
 > **Essence:** the canonical task registry of devst: a task is an object with links, timers, and closure gates; the registry absorbs open-questions and TODO bookkeeping, and `devst board` is the live "what needs doing" slice. The answer to systematic doc drift: an audit of an external TTRPG project found 15 stale facts after a single week of active work.
 > **Key facts:**

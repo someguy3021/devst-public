@@ -1,5 +1,7 @@
 # ADR-021: Reminder system — providers over detectors, one render per medium
 
+> [Русская версия](../ru/decisions/adr-021-reminder-pipeline.md)
+
 > **Status:** Accepted · **Date:** 2026-09-12
 > **Essence:** All devst reminders are assembled by a pure kernel, `src/remind.ts`: `Reminder {id, severity, title, detail?, action?}` + `collectReminders(facts, config)`. A single entry point, `devst remind [--json]`; the SessionStart hook, the brief, and the "Now" panel widget only render one array. Customization lives in the "remind" slice of devst.json.
 > **Rejected:** hand-written blocks in the hook (adding one reminder = 4 edit sites — the T-13 diagnosis); a journal with "seen" suppression (requires state — feature 05 non-goals); thresholds hardcoded in code.

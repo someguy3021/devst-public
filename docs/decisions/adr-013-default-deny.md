@@ -1,5 +1,7 @@
 # ADR-013: Default-deny mode for the UI freeze registry
 
+> [Русская версия](../ru/decisions/adr-013-default-deny.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** A `**Mode:** default-deny` line in the ui-freeze.md doc header flips the semantics: a file NOT in the registry → 🔒🔒 hard (normal mode is the reverse: no entry → free to edit).
 > **Rejected:** special mechanics such as "`!` = global allow" and other registry-bypass exceptions (first draft) — rejected by the author: "the registry is already global; an allowance is expressed as a row." Semantic simplicity beats syntactic sugar.

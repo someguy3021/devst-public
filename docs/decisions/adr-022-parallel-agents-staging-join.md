@@ -1,5 +1,7 @@
 # ADR-022: Parallel agents — staging task registries and join
 
+> [Русская версия](../ru/decisions/adr-022-parallel-agents-staging-join.md)
+
 > **Status:** Accepted · **Date:** 2026-09-25
 > **Essence:** Parallel agents write tasks into staging journals `docs/registry-inbox/<session>--<agent>.db` (git-tracked), which are merged into canon by an idempotent join; the task number is allocated from canon at `task new`; staging holds tasks only. The `registry.db` canon is unchanged — an extension of ADR-017 axis 5 (the git level of parallelism it did not cover).
 > **Rejected:** a commit queue (the author's pain point verbatim); local IDs renumbered at join (breaks "Closes T-NN"/touch/gate); an md/ndjson journal; SQLite locking as the complete solution.

@@ -1,5 +1,7 @@
 # ADR-004: Log Budget in Lint 60 → 200 (Aim for ~60–80 as Prose Guidance)
 
+> [Русская версия](../ru/decisions/adr-004-log-budget-200.md)
+
 > **Status:** Accepted · **Date:** 2026-09-07
 > **Essence:** a hard lint budget of 200 lines per log entry; "aim for ~60–80" is prose guidance in the docs, not a lint rule.
 > **Rejected:** keeping 60 — 7 of 26 honest logs from a TTRPG side project did not fit.

@@ -1,5 +1,7 @@
 # ADR-020: devst sidecar in the Tauri UI — task mutations from the window via the CLI
 
+> [Русская версия](../ru/decisions/adr-020-tauri-sidecar.md)
+
 > **Status:** Accepted · **Date:** 2026-09-12
 > **Essence:** The Tauri window ships the SEA binary with itself (`externalBin: binaries/devst`): the board gains "+ task" and "✓ closing gate" actions — mutations are executed by the CLI sidecar (`task new` / `task close`, cwd = the open repo), and closing gates are not duplicated in the window. SidecarKernel is a targeted extension of `KernelAdapter` (`taskNew`/`taskClose`), not a full replacement of DirectKernel.
 > **Rejected:** a full SidecarKernel replacement (webview-kernel reads already work — ADR-015); gates on the Rust side (a second implementation bypassing 319 tests); wasm/sql.js (ADR-017 rev. 11).

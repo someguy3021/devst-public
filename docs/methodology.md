@@ -1,7 +1,9 @@
 # The dev-standard methodology
 
+> [Русская версия](ru/methodology.md)
+
 > Part of the devst public documentation. English is the source of truth; a Russian
-> mirror lives under [docs/ru/](./ru/) (being translated).
+> mirror lives under [docs/ru/methodology.md](./ru/methodology.md).
 
 devst is the tooling for an internal methodology called **dev-standard**. This page
 adapts its core ideas — everything described here is enforced mechanically by devst

@@ -1,5 +1,7 @@
 # ADR-016: UI E2E — MockKernel + Playwright in a browser
 
+> [Русская версия](../ru/decisions/adr-016-ui-e2e-mockkernel-playwright.md)
+
 > **Status:** Accepted · **Date:** 2026-09-10
 > **Essence:** UI autotests run real Chromium against a Vite build with a MockKernel (an in-memory KernelAdapter); tauri-driver stays deferred until the exe is stable.
 > **Rejected:** tauri-driver now (heavyweight, the UI is still migrating); component tests only (they don't cover scenarios); leaving the UI untested altogether (the DnDProvider bug is the counterexample).

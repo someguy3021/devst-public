@@ -1,5 +1,7 @@
 # ADR-008: Standard version tracking + SessionStart as the catcher of edits made without the tool
 
+> [Русская версия](../ru/decisions/adr-008-standard-version-tracking.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** `check` parses the dev-standard version from the docs/README doc header and warns when a project lags behind; a SessionStart hook runs check and weaves its findings into the morning injection.
 > **Rejected:** A dedicated version field/file (the doc header already has a place for it).

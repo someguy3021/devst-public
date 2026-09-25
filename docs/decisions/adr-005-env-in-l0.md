@@ -1,5 +1,7 @@
 # ADR-005: Environment and Neighboring Repos in L0 + Lint Against "Invisible e2e"
 
+> [Русская версия](../ru/decisions/adr-005-env-in-l0.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** AGENTS.md must carry an "Environment" section (a table of verification commands) and a "Neighboring repositories" section (ours or foreign, whether changes are allowed); lint cross-checks both against stack manifests.
 > **Rejected:** hoping the agent will inspect `package.json` on its own (a real incident: configured e2e tests slipped past the agent in a new project).

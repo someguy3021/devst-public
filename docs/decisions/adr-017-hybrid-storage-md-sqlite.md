@@ -1,5 +1,7 @@
 # ADR-017: devst data storage — hybrid md + SQLite, migration order, hosting
 
+> [Русская версия](../ru/decisions/adr-017-hybrid-storage-md-sqlite.md)
+
 > **Status:** Accepted · **Date:** 2026-09-11
 > **Essence:** The canon becomes a hybrid: prose stays markdown in git; registries move to SQLite (`node:sqlite`, zero-deps) one at a time — freeze → sessions index → tasks; tasks are born in the DB; the UI reaches the registry through the Rust side (rusqlite + IPC, an addendum to [ADR-015](adr-015-tauri-ui-stack.md)). Hosting is mode-based: the project repo by default, a companion doc repo for no-trace repos (docs and AGENTS never appear in the project repo's git history). **Stage 0 of feature 04 is closed by this ADR — no separate task-tracker ADR is opened.**
 > **Rejected:** a DB for the prose too (would revise git archaeology — a non-goal of feature 04 §5); wasm/sql.js (lost updates); `devst.json` as the only mapping (a trace in no-trace mode); a machine-wide project registry for now; an external tracker.

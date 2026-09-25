@@ -1,5 +1,7 @@
 # ADR-011: UI freeze registry — knowledge, guard, and diff analysis
 
+> [Русская версия](../ru/decisions/adr-011-ui-freeze.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** `docs/ui-freeze.md` (a screen → status → areas table) plus three mechanisms: SessionStart injection, a PostToolUse guard on any file, and pre-commit analysis of the staged diff. Two levels: 🔒🔒 hard (programmatic ban) and 🔒 soft (editing allowed under a warning).
 > **Rejected:** a blanket "forbid editing the file" rule — too crude. The author's primary stack is Vue SFC: the `<script>` block of a frozen screen must remain editable, so file-level freezing without block granularity kills legitimate logic changes.

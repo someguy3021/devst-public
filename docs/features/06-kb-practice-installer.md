@@ -1,5 +1,7 @@
 # Feature 06: KB practice installer — big practices as skills, per-project, with reminders
 
+> [Русская версия](../ru/features/06-kb-practice-installer.md)
+
 > **Status:** design (protocol collected; development not started) · **Updated:** 2026-09-13
 > **Essence:** kb in devst is not a "knowledge base of texts" — it is a manager of big practices: skill-folder packs (SOLID, Clean Architecture, FSD, Micro-frontends, MVC, ts-idioms…) that devst installs into the AI harness as skills, toggles per project via config, reminds the agent of at session start ("we are writing per Clean Architecture"), and points to on violations ("see skill X!"). Plus "linting without an installed linter": small machine checks (secrets/TODO/tests) bundled into the same packs.
 > **Key facts:**

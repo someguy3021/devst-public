@@ -1,5 +1,7 @@
 # ADR-014: Requirements reconciliation — spec ↔ backend ↔ frontend (docs/requirements.md)
 
+> [Русская версия](../ru/decisions/adr-014-req-reconcile.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** A dedicated doc `docs/requirements.md` with R-NN rows ("requirement verbatim / backend fact / verdict — who is right / delta / action / date"); a `/req-check` ritual; a SessionStart reminder when more than 3 rows are open. dev-standard → v1.4.
 > **Rejected:** tables inside individual features (no consolidated view, no end-to-end IDs); fact-checking done only by the author (the agent verifies itself — the source is declared in the doc header); deleting closed rows (the "who was right" knowledge base would be lost).

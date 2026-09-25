@@ -1,5 +1,7 @@
 # Feature 05: Reminder system — reminder providers and `devst remind`
 
+> [Русская версия](../ru/features/05-reminder-system.md)
+
 > **Status:** Stages 0–3 done (ADR-021, session 26) · **Updated:** 2026-09-12
 > **Essence:** every devst reminder is one `Reminder` class plus a provider registry layered over the existing detectors; one entry point `devst remind [--json]`; one render per carrier (the SessionStart panel, brief, the UI "Now" widget). A new reminder = a provider + one line in `collectReminders` — every carrier picks it up automatically. The customization point is the "remind" slice of devst.json (thresholds + an off-list).
 > **Key facts:**

@@ -1,5 +1,7 @@
 # Feature 01: Baseline Screenshots for Frozen Screens (freeze --baseline/--verify)
 
+> [Русская версия](../ru/features/01-baseline-screenshots.md)
+
 > **Status:** Implemented (stages 1–3 plus mandatory tests) · **Updated:** 2026-09-09
 > **Essence:** The UI-freeze mechanism captures screenshots of real screens across a set of viewports; a Playwright diff then mechanically catches "the layout drifted" — a layout regression becomes a machine-checkable fact with freeze context attached, not an agent's opinion.
 > **Key facts:**

@@ -1,7 +1,9 @@
 # Architecture overview
 
+> [Русская версия](../ru/architecture/overview.md)
+
 > Part of the devst public documentation. English is the source of truth; a Russian
-> mirror lives under [docs/ru/](../ru/) (being translated).
+> mirror lives under [docs/ru/architecture/overview.md](../ru/architecture/overview.md).
 
 ## The one-paragraph version
 

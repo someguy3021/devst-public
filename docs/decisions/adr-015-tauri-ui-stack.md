@@ -1,5 +1,7 @@
 # ADR-015: Tauri UI stack — Vite + Quasar webview, KernelAdapter
 
+> [Русская версия](../ru/decisions/adr-015-tauri-ui-stack.md)
+
 > **Status:** Accepted · **Date:** 2026-09-10
 > **Essence:** The devst Tauri v2 window: frontend is Vite + Vue 3 + Quasar via `@quasar/vite-plugin` (no Quasar CLI) plus `vue-dnd-kit/core`; the pure `src/` core runs directly in the webview; canon mutations are the core's pure apply-transformers, writes go through `tauri-plugin-fs` scoped to the open repo directory; the UI is decoupled from the core behind a KernelAdapter interface (direct import today, sidecar IPC after stage 2.3 — no screen changes).
 > **Rejected:** Quasar CLI (a second build layer on top of Vite); mutations via CLI/sidecar at the start (no sidecar yet, it would require Node — breaks the "single exe"); Rust commands in the backend (rewriting the core in a second language); Electron — fallback plan only (portability).

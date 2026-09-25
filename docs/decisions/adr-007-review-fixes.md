@@ -1,5 +1,7 @@
 # ADR-007: Three fixes from the weaknesses review
 
+> [Русская версия](../ru/decisions/adr-007-review-fixes.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** Freshness drift is judged by commit date (not mtime); stripFences for code blocks; a "stale Now panel" rule.
 > **Rejected:** mtime-based freshness checks (see below — false positives on a fresh clone).

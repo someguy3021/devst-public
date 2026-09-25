@@ -1,5 +1,7 @@
 # Feature 03: devst UI — Desktop Window (Tauri)
 
+> [Русская версия](../ru/features/03-devst-ui-desktop-window.md)
+
 > **Status:** In progress (stages 0–6 done; 3b figma renders remain) · **Updated:** 2026-09-25
 > **Essence:** A desktop Tauri window over the docs/ canon, without Chrome: a freeze panel (a file tree × statuses, drag-and-drop, live validation of globals), a check list, an env table, the "Now" panel, and closing a session with a button. The UI is a viewer/editor for the markdown canon — never a second source of truth.
 > **Key facts:**

@@ -1,5 +1,7 @@
 # ADR-001: TypeScript Repo with a Clean Core Instead of a Single Script
 
+> [Русская версия](../ru/decisions/adr-001-ts-repo-instead-of-script.md)
+
 > **Status:** Accepted · **Date:** 2026-09-06
 > **Essence:** devst is a TypeScript repo (clean core + thin CLI + vitest), not a one-file script.
 > **Rejected:** keeping `devst.mjs` (an untestable monolith); a CLI framework with dependencies.

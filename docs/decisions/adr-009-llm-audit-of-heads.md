@@ -1,5 +1,7 @@
 # ADR-009: LLM audit of doc headers — a command plus a monthly reminder
 
+> [Русская версия](../ru/decisions/adr-009-llm-audit-of-heads.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** `/docs-audit` cross-checks architecture/features doc headers against their bodies; a SessionStart hook reminds every 30 days based on a `_Header audit: date_` stamp in docs/README.
 > **Rejected:** A scheduled automatic run (token-hungry — a hard author requirement); auditing all docs (ADR/roadmap/log are rigidly formatted and held in shape by the linter); per-doc stamps (noise).

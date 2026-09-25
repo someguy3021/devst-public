@@ -1,5 +1,7 @@
 # devst
 
+> [Русская версия](docs/ru/README.md)
+
 **Documentation-first tooling for AI-assisted development** — a zero-dependency CLI
 and a Tauri desktop companion that keep your repository's documentation alive when
 AI agents write most of the code.
@@ -103,7 +105,7 @@ Details and the module map: [docs/architecture/overview.md](docs/architecture/ov
 - [Architecture overview](docs/architecture/overview.md) — layers, storage, distribution, testing
 - [Features](docs/features/) — six feature deep-dives: visual baselines, Bug Hunt, the desktop window, the task registry, reminders, the practice installer
 - [Decision records](docs/decisions/) — all 22 ADRs, in English
-- Русская версия зеркалируется в [docs/ru/](docs/ru/) (перевод в процессе)
+- [Русская версия](docs/ru/README.md) — полное зеркало документации (английский — источник истины)
 
 ## Engineering highlights
 

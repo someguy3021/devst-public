@@ -1,5 +1,7 @@
 # ADR-012: Integrations install / doctor (stage 1); running from the repo checkout is explicitly temporary
 
+> [Русская версия](../ru/decisions/adr-012-integrations-install-doctor.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** `devst integrations install [--only …]` places the skill, commands, hooks, and config into their harness locations (target specs in `integrations/targets/*.json`; stage 1 targets ZCode); `devst doctor` verifies the whole chain and catches drift of installed copies. Running the CLI with node from the repo folder is explicitly marked as a TEMPORARY arrangement (stage 0 of distribution).
 > **Rejected:** "fork per harness" — replaced by three portability layers (truth / knowledge / enforcement) with git pre-commit as the portable enforcement layer; also rejected: install without doctor (five surfaces would drift apart).

@@ -1,5 +1,7 @@
 # ADR-019: Machine-independent canon — tokens and substitution at install
 
+> [Русская версия](../ru/decisions/adr-019-machine-independent-canon-tokens.md)
+
 > **Status:** Accepted · **Date:** 2026-09-12
 > **Essence:** The canon (skill, slash commands) carries no machine paths — tokens `{devst_cli}` / `{devst_repo}` / `{standard_doc}` instead; `integrations install` substitutes the machine's values at layout time (an extension of the hooks' `patchCli`), and `doctor` verifies hashes with the same substitution applied.
 > **Rejected:** the canon reading a `devst.json` marker at runtime (an extra step for the agent); a PATH shim `devst` and env vars via setx (system-level changes; env — a future opt-in).

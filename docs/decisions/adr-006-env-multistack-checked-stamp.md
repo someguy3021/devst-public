@@ -1,5 +1,7 @@
 # ADR-006: `devst env` (multi-stack) + a "Checked" stamp with event-driven freshness
 
+> [Русская версия](../ru/decisions/adr-006-env-multistack-checked-stamp.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** Mechanical environment recon (node/php/go/rust/python/make manifests, Make targets, compose, sibling projects, CI) that drafts the environment table; freshness is tracked event-driven, via mtime or the last commit.
 > **Rejected:** Recon purely via the skill's text protocol; a calendar-based check timer.

@@ -1,5 +1,7 @@
 # ADR-018: CLI distribution — a SEA binary with the canon baked in as assets
 
+> [Русская версия](../ru/decisions/adr-018-sea-binary-distribution.md)
+
 > **Status:** Accepted · **Date:** 2026-09-12
 > **Essence:** The CLI ships as a Node SEA binary (`pnpm build:sea` → `dist/sea/devst.exe`): an esbuild bundle of `src/` is injected into a copy of node.exe, and the install canon (skill/commands/hooks/targets/templates) rides along as SEA assets. `devst.exe integrations install` bakes the **path to the exe** into the hooks — working-tree edits of `src/` no longer touch the live workflow.
 > **Rejected:** deno/bun compile — deferred (a foreign runtime against 300 tests; bun needs a `bun:sqlite` adapter); an npm package — a fallback; Electron — the fallback plan of [ADR-015](adr-015-tauri-ui-stack.md).

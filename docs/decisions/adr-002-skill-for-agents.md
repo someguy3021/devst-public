@@ -1,5 +1,7 @@
 # ADR-002: Agent Skill with "Docs Already Exist" as the First-Class Scenario
 
+> [Русская версия](../ru/decisions/adr-002-skill-for-agents.md)
+
 > **Status:** Accepted · **Date:** 2026-09-06
 > **Essence:** SKILL.md is a compact digest-router with three scenarios (A: no docs yet / B: upgrade existing docs / C: working cycle); B is the primary one.
 > **Rejected:** a thin wrapper over the CLI (too narrow); retelling the whole standard (duplicating the source of truth).

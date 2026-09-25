@@ -1,5 +1,7 @@
 # Feature 02: Bug Hunt — Pinpoint Reports from Designer-Testers
 
+> [Русская версия](../ru/features/02-bug-hunt.md)
+
 > **Status:** Implemented for "Testing Staged" (S1–S4; the S5 live run remains) · **Updated:** 2026-09-09
 > **Essence:** Two products on a shared codebase — **Testing Staged** (a snippet on staging; covers 80% of the "styles/image look wrong" cases with zero installation) and **Testing Extra** (Tauri, heavyweight access: console/network/CDP for hard bugs). They share the report format, the ingest pipeline, and the AI-facing bug card — generalized exactly where a developer-plus-agent picks up the work. The tester pins an element + comments, or leaves a free comment without an element; the output is machine-processable data.
 > **Key facts:**

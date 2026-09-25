@@ -1,5 +1,7 @@
 # ADR-003: Harness Integrations — Slash Commands and Two Hooks (file_path Anchor)
 
+> [Русская версия](../ru/decisions/adr-003-harness-integrations.md)
+
 > **Status:** Accepted · **Date:** 2026-09-06
 > **Essence:** the `/session` and `/docs-upgrade` commands plus a SessionStart state injection and a PostToolUse docs lint; hooks anchor on `file_path` from the payload, not on the cwd.
 > **Rejected:** a cwd-based guard — hooks start from the harness's own working directory and silently no-op (confirmed by the author's dead CRG hooks).

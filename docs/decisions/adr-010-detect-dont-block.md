@@ -1,5 +1,7 @@
 # ADR-010: Edits made without the tool — detect, don't block
 
+> [Русская версия](../ru/decisions/adr-010-detect-dont-block.md)
+
 > **Status:** Accepted · **Date:** 2026-09-08
 > **Essence:** `devst undocumented` finds code commits newer than the last docs/log/ entry and tells the agent "investigate and write it up"; pre-commit warns by default, blocking is opt-in via `--strict`.
 > **Rejected:** A blocking pre-commit by default (author: my own commits made without the tool must not get stuck); calendar-based reminders (event-driven is more precise).
