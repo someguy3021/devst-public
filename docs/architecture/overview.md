@@ -98,15 +98,14 @@ process — one implementation of the rules, not two.
 
 ## Decision record (selected ADRs)
 
-- **ADR-001** — TypeScript repo with a pure core instead of a one-file script
-- **ADR-015** — Tauri v2 + Vite + Quasar, core executed in the webview
-- **ADR-016** — browser E2E with Playwright and a MockKernel instead of tauri-driver
-- **ADR-017** — hybrid storage: markdown prose + SQLite registries
-- **ADR-018** — distribution as a Node SEA binary with the canon embedded
-- **ADR-019** — machine-independent canon: path tokens substituted at install
-- **ADR-020** — the SEA binary as the Tauri app's sidecar
-- **ADR-021** — reminders as one pipeline over detector providers
-- **ADR-022** — parallel agents: staging task journals + idempotent join
+- **[ADR-001](../decisions/adr-001-ts-repo-instead-of-script.md)** — TypeScript repo with a pure core instead of a one-file script
+- **[ADR-015](../decisions/adr-015-tauri-ui-stack.md)** — Tauri v2 + Vite + Quasar, core executed in the webview
+- **[ADR-016](../decisions/adr-016-ui-e2e-mockkernel-playwright.md)** — browser E2E with Playwright and a MockKernel instead of tauri-driver
+- **[ADR-017](../decisions/adr-017-hybrid-storage-md-sqlite.md)** — hybrid storage: markdown prose + SQLite registries
+- **[ADR-018](../decisions/adr-018-sea-binary-distribution.md)** — distribution as a Node SEA binary with the canon embedded
+- **[ADR-019](../decisions/adr-019-machine-independent-canon-tokens.md)** — machine-independent canon: path tokens substituted at install
+- **[ADR-020](../decisions/adr-020-tauri-sidecar.md)** — the SEA binary as the Tauri app's sidecar
+- **[ADR-021](../decisions/adr-021-reminder-pipeline.md)** — reminders as one pipeline over detector providers
+- **[ADR-022](../decisions/adr-022-parallel-agents-staging-join.md)** — parallel agents: staging task journals + idempotent join
 
-Full English translations of all 22 ADRs are being published under
-[docs/decisions/](./decisions/) (in progress).
+All 22 decision records are published under [docs/decisions/](../decisions/).

@@ -101,8 +101,8 @@ Details and the module map: [docs/architecture/overview.md](docs/architecture/ov
 
 - [The dev-standard methodology](docs/methodology.md) — the conventions devst enforces
 - [Architecture overview](docs/architecture/overview.md) — layers, storage, distribution, testing
-- Feature deep-dives and all 22 ADRs in English — being translated into
-  [docs/features/](docs/features/) and [docs/decisions/](docs/decisions/)
+- [Features](docs/features/) — six feature deep-dives: visual baselines, Bug Hunt, the desktop window, the task registry, reminders, the practice installer
+- [Decision records](docs/decisions/) — all 22 ADRs, in English
 - Русская версия зеркалируется в [docs/ru/](docs/ru/) (перевод в процессе)
 
 ## Engineering highlights

@@ -15,10 +15,13 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 // Private markers that must never appear in the public repository.
+// The genre word "TTRPG" is allowed in the sanctioned neutral phrase
+// "a TTRPG side project" (ADR-023) — the *name* of the private project is not.
 const FORBIDDEN = [
   { re: /AI_Cwork/i, why: "local machine path" },
   { re: /C:\\+Users/i, why: "local user path" },
-  { re: /\bttrpg\b/i, why: "private project name" },
+  { re: /\bttrpg-app-q\b/i, why: "private project name" },
+  { re: /\bdev-flow-want-this\b/i, why: "private repository name" },
   { re: /github\.com\/someguy3021\/devst(?!-public)/i, why: "link to the private repository" },
 ];
 
