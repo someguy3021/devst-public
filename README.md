@@ -15,9 +15,9 @@ AI agents write most of the code.
 
 ![devst desktop companion — environment recon](assets/screenshots/hero.png)
 
-| Now panel | Close-session gate | Freeze tree |
-|---|---|---|
-| !["Now" panel](assets/screenshots/now.png) | ![Session close with gates](assets/screenshots/session.png) | ![Freeze registry tree](assets/screenshots/freeze.png) |
+| Now panel | Check list | Close-session gate | Freeze tree |
+|---|---|---|---|
+| !["Now" panel](assets/screenshots/now.png) | ![Check list, all clean](assets/screenshots/check.png) | ![Session close with gates](assets/screenshots/session.png) | ![Freeze registry tree](assets/screenshots/freeze.png) |
 
 *Screenshots show the desktop companion (English interface, dark theme) working
 against a real repository.*
