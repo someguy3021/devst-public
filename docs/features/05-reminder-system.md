@@ -2,15 +2,15 @@
 
 > [Русская версия](../ru/features/05-reminder-system.md)
 
-> **Status:** Stages 0–3 done (ADR-021, session 26) · **Updated:** 2026-09-12
-> **Essence:** every devst reminder is one `Reminder` class plus a provider registry layered over the existing detectors; one entry point `devst remind [--json]`; one render per carrier (the SessionStart panel, brief, the UI "Now" widget). A new reminder = a provider + one line in `collectReminders` — every carrier picks it up automatically. The customization point is the "remind" slice of devst.json (thresholds + an off-list).
+> **Status:** Stages 0–3 done (ADR-021, session 26); v1.2 detectors (links-stale, canon-stale) done · **Updated:** 2026-10-07
+> **Essence:** every devst reminder is one `Reminder` class plus a provider registry layered over the existing detectors; one entry point `devst remind [--json]`; one render per carrier (the SessionStart panel, brief, the UI "Now" widget). A new reminder = a provider + one line in `collectReminders` — every carrier picks it up automatically. The customization point is the "remind" slice of devst.json (thresholds + an off-list). Since v1.2 the registry also carries the links/canon detectors: `links-stale` reports neighbor problems at SessionStart ([Feature 07](./07-linked-repos.md)), `canon-stale` flags the canon (`skill/` + `integrations/` + `templates/`) newer than the installed SEA binary — both ride the same carriers.
 > **Key facts:**
-> - 8 providers: conventions-errors, uncommitted, undocumented, baseline-drift, tasks-rotten, conventions-warnings, req-open, audit.
+> - 10 providers: conventions-errors, uncommitted, undocumented, baseline-drift, tasks-rotten, conventions-warnings, req-open, audit — plus the v1.2 detectors links-stale (neighbor problems, Feature 07) and canon-stale (the canon newer than the SEA binary).
 > - Providers are the single home of reminder semantics; the carriers (hook/brief/UI) only render.
 > - The SessionStart hook makes one CLI call instead of several hand-written blocks; the brief block and the UI widget are fed by the same providers.
 > - Customization: `"remind": { "auditDays": 14, "reqOpen": 1, "off": ["audit"] }` in devst.json; malformed fields silently fall back to defaults.
 > - 3 protocol decisions, 4 stages — all done.
-> **Related:** [ADR-021](../decisions/adr-021-reminder-pipeline.md) · [ADR-010](../decisions/adr-010-detect-dont-block.md) (detect, don't block) · [Feature 06](./06-kb-practice-installer.md) (a consumer: practice reminders ride on this system) · tasks T-16 and T-13 (uncommitted was this system's de facto first client)
+> **Related:** [ADR-021](../decisions/adr-021-reminder-pipeline.md) · [ADR-010](../decisions/adr-010-detect-dont-block.md) (detect, don't block) · [Feature 06](./06-kb-practice-installer.md) (a consumer: practice reminders ride on this system) · [Feature 07](./07-linked-repos.md) (the subject of the links-stale detector) · tasks T-16 and T-13 (uncommitted was this system's de facto first client)
 
 ## 1. Essence and consumers
 
@@ -56,3 +56,8 @@ The author's concern: a signal must not dissolve into ten identical variations s
 - A firing log / metrics: falls out of the JSON output for free later, not now.
 - PostToolUse guards (freeze / lint-on-save) — contextual and file-anchored; they do not merge into this system.
 - Push notifications / a background daemon — not our format (a CLI invoked on demand).
+
+## 6. v1.2 detectors (2026-10-06): links and canon
+
+- `links-stale` ([Feature 07](./07-linked-repos.md)): neighbor problems from `docs/links.json` — a repo not found, a link not mutual, a pin CHANGED/GONE, a mirror stale. Action: `devst links check`.
+- `canon-stale` (T-31): in a devst repo, the canon (`skill/` + `integrations/` + `templates/`) is newer than the SEA binary `dist/sea/devst.exe` (or the binary is missing). Action: `pnpm build:sea && devst integrations install`. Foreign repos carry no canon — the detector stays silent. The verdict is a pure `canonStaleVerdict` (remind.ts); the filesystem walk lives in the cli adapter.

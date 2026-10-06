@@ -9,7 +9,7 @@ AI agents write most of the code.
 ![License: CC BY 4.0](https://img.shields.io/badge/license-CC_BY_4.0-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A522.5-339933?logo=nodedotjs&logoColor=white)
 ![Runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-brightgreen)
-![Tests](https://img.shields.io/badge/tests-300%2B-green)
+![Tests](https://img.shields.io/badge/tests-384-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 [![docs-check](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml/badge.svg)](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml)
 
@@ -50,6 +50,7 @@ linted, freshness-checked, and wired into the AI harness itself.
 | Bug Hunt | `devst bugs emit` · `ingest` | Ships an obfuscated overlay artifact to external testers; ingests their reports into pinpoint `BUG-*` cards mapped to screens and files |
 | Reminders | `devst remind` | One reminder pipeline over detector providers: undocumented commits, uncommitted work, stale tasks |
 | Harness integrations | `devst integrations install` · `doctor` | Installs skills, slash-commands and hooks into the AI harness from machine-independent canonical templates; `doctor` verifies the wiring |
+| Linked repos | `devst links check` · `pin` · `mirror` | Tracks related devst repositories: `id://` cross-links, sha256+HEAD pins, digests of the neighbor's session logs, byte-for-byte mirrors — surfaced in reminders and a desktop tab |
 | Desktop companion | `devst-ui` | Tauri v2 app: "Now" panel, check list, freeze tree with drag-and-drop, task board — the same pure core running in the webview |
 
 ## How a session flows
@@ -110,9 +111,9 @@ Details and the module map: [docs/architecture/overview.md](docs/architecture/ov
 ## Engineering highlights
 
 - **0 runtime dependencies** — Node stdlib only; strict `tsc` green.
-- **300+ automated tests**, including real-Chromium E2E of every desktop screen
+- **384 automated tests**, including real-Chromium E2E of every desktop screen
   (Playwright against a vite build with a `MockKernel` adapter).
-- **22 recorded ADRs** — every architectural decision documented, superseded ones
+- **27 recorded ADRs** — every architectural decision documented, superseded ones
   preserved, never renumbered.
 - **One self-contained binary** (Node SEA, ~88 MB) + desktop sidecar: one
   implementation of the rules, not two.

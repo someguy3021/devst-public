@@ -66,11 +66,13 @@ database, so each format stays the source of truth for its kind of data.
 | `bugs-core.ts` | Bug Hunt: report formats, URL → screen → files, pinpoint BUG-* cards |
 | `integrations.ts` | Target specs, token substitution, config merge, hash verification for `integrations install` / `doctor` |
 | `remind.ts` | Reminder pipeline: one `Reminder` model over provider detectors |
-| `scaffold.ts` | Truthful-number stubs for `new adr/session/feature/...`, `init` generators |
+| `links.ts` / `links-run.ts` | Linked repositories: `links.json` manifest, `id://` cross-links, sha256+HEAD pins, byte-for-byte mirrors |
+| `scaffold.ts` | Truthful-number stubs for `new adr/session/feature/research/...`, `init` generators |
 
 Shells: `cli.ts` (arguments, FS, output, exit codes), `registry-run.ts` (SQLite WAL,
 git helpers), `integrate-run.ts` (live install + doctor smoke), `bugs-run.ts`
-(artifact build/obfuscation, ingest), `visual-run.ts` (Playwright orchestration).
+(artifact build/obfuscation, ingest), `links-run.ts` (pin/mirror checks on the live
+file system), `visual-run.ts` (Playwright orchestration).
 
 ## Command pipeline
 
@@ -78,8 +80,8 @@ git helpers), `integrate-run.ts` (live install + doctor smoke), `bugs-run.ts`
 `env` (recon / freshness stamp) → `check` (lint, exit 1 for CI) → `map` / `status`
 (regeneration) → `hook install` (pre-commit in a target repo). Dedicated circuits
 branch off: UI freezing — `freeze --scan/--file/--staged` + `visual`; staging —
-`bugs emit/ingest`; harness wiring — `integrations install` + `doctor`; tasks —
-`task new/show/start/close` + `board` + `file`.
+`bugs emit/ingest`; linked repos — `links check/pin/mirror`; harness wiring —
+`integrations install` + `doctor`; tasks — `task new/show/start/close` + `board` + `file`.
 
 ## Distribution: single binary + sidecar
 
@@ -92,7 +94,7 @@ process — one implementation of the rules, not two.
 
 ## Testing
 
-- **Pure-core units** — the bulk of the ~300+ tests; strings in, strings out.
+- **Pure-core units** — the bulk of the ~380 tests; strings in, strings out.
 - **Browser E2E** — real Chromium (Playwright) against a vite build of the UI with a
   `MockKernel` adapter standing in for Tauri IPC; every screen covered.
 - **Visual regression** — layout snapshots + screen hashes by default, true pixel
@@ -109,5 +111,6 @@ process — one implementation of the rules, not two.
 - **[ADR-020](../decisions/adr-020-tauri-sidecar.md)** — the SEA binary as the Tauri app's sidecar
 - **[ADR-021](../decisions/adr-021-reminder-pipeline.md)** — reminders as one pipeline over detector providers
 - **[ADR-022](../decisions/adr-022-parallel-agents-staging-join.md)** — parallel agents: staging task journals + idempotent join
+- **[ADR-025](../decisions/adr-025-linked-repos-links-json.md)** — linked repositories: `id://` links, pins, mirrors
 
-All 22 decision records are published under [docs/decisions/](../decisions/).
+All 27 decision records are published under [docs/decisions/](../decisions/).

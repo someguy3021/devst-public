@@ -2,23 +2,27 @@
 
 > Русский · [English](../../features/05-reminder-system.md)
 
-> **Статус:** этапы 0–3 ГОТОВЫ (ADR-021, сессия 26) · **Обновлено:** 2026-09-12
+> **Статус:** этапы 0–3 ГОТОВЫ (ADR-021, сессия 26); детекторы v1.2 (links-stale, canon-stale) · **Обновлено:** 2026-10-07
 
 **Суть:** все напоминания devst — один класс `Reminder` + реестр провайдеров
 поверх существующих детекторов; один вход `devst remind [--json]`; один рендер
 на носитель (SessionStart-панель, brief, UI-виджет «Сейчас»). Новое напоминание =
 провайдер + строка в `collectReminders` — во все носители приезжает само.
-Точка кастомизации — слайс «remind» в devst.json (пороги + off-список).
+Точка кастомизации — слайс «remind» в devst.json (пороги + off-список). С v1.2
+реестр несёт и детекторы связей/канона: `links-stale` докладывает проблемы соседей
+в SessionStart ([фича 07](./07-linked-repos.md)), `canon-stale` — канон
+(`skill/` + `integrations/` + `templates/`) новее установленного SEA-бинаря;
+оба едут в те же носители.
 
 **Ключевые факты:**
 
-- 8 провайдеров: conventions-errors, uncommitted, undocumented, baseline-drift, tasks-rotten, conventions-warnings, req-open, audit.
+- 10 провайдеров: conventions-errors, uncommitted, undocumented, baseline-drift, tasks-rotten, conventions-warnings, req-open, audit — плюс детекторы v1.2: links-stale (проблемы соседей, фича 07) и canon-stale (канон новее SEA-бинаря).
 - Провайдеры — единственное место, где живёт семантика напоминаний; носители (хук/brief/UI) только рендерят.
 - SessionStart-хук делает один CLI-вызов вместо нескольких рукописных блоков; блок brief и UI-виджет кормятся теми же провайдерами.
 - Кастомизация: `"remind": { "auditDays": 14, "reqOpen": 1, "off": ["audit"] }` в devst.json; кривые поля молча откатываются к дефолтам.
 - 3 решения протокола, 4 этапа — все готовы.
 
-**Связанное:** [ADR-021](../decisions/adr-021-reminder-pipeline.md) · [ADR-010](../decisions/adr-010-detect-dont-block.md) (детект, не блокировка) · [фича 06](./06-kb-practice-installer.md) (потребитель: напоминания практик едут на этой системе) · задачи T-16 и T-13 (uncommitted — де-факто первый клиент этой системы)
+**Связанное:** [ADR-021](../decisions/adr-021-reminder-pipeline.md) · [ADR-010](../decisions/adr-010-detect-dont-block.md) (детект, не блокировка) · [фича 06](./06-kb-practice-installer.md) (потребитель: напоминания практик едут на этой системе) · [фича 07](./07-linked-repos.md) (предмет детектора links-stale) · задачи T-16 и T-13 (uncommitted — де-факто первый клиент этой системы)
 
 ## 1. Суть и потребители
 
@@ -86,3 +90,13 @@
 - PostToolUse-гарды (freeze / линт-на-сохранение) — контекстные, файл-якорные;
   в эту систему не сливаются.
 - Пуш-уведомления / фоновый демон — не наш формат (CLI, вызываемый по запросу).
+
+## 6. Детекторы v1.2 (2026-10-06): связи и канон
+
+- `links-stale` ([фича 07](./07-linked-repos.md)): проблемы соседей из `docs/links.json` —
+  репа не найдена, связь не взаимна, пин ИЗМЕНИЛОСЬ/ПРОПАЛО, зеркало отстало.
+  Действие: `devst links check`.
+- `canon-stale` (T-31): в репе devst канон (`skill/` + `integrations/` + `templates/`)
+  новее SEA-бинаря `dist/sea/devst.exe` (или бинаря нет). Действие:
+  `pnpm build:sea && devst integrations install`. В чужих репах канона нет — детектор
+  молчит. Вердикт — чистая `canonStaleVerdict` (remind.ts), обход ФС — в обвязке cli.

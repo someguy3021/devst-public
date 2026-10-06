@@ -2,7 +2,7 @@
 
 > [Русская версия](../ru/decisions/adr-004-log-budget-200.md)
 
-> **Status:** Accepted · **Date:** 2026-09-07
+> **Status:** Superseded by [ADR-024](adr-024-lint-budgets-250-20-200.md) (бюджеты 250/20/200, devst:allow, лог-кампании) · **Date:** 2026-09-07
 > **Essence:** a hard lint budget of 200 lines per log entry; "aim for ~60–80" is prose guidance in the docs, not a lint rule.
 > **Rejected:** keeping 60 — 7 of 26 honest logs from a TTRPG side project did not fit.
 > **Related:** dev-standard v1.1.1 (changelog)

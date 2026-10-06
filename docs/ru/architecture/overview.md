@@ -68,11 +68,13 @@ stdlib Node). Всё, что касается внешнего мира, — ф�
 | `bugs-core.ts` | Bug Hunt: форматы репортов, URL → экран → файлы, адресные карточки BUG-* |
 | `integrations.ts` | Таргет-спеки, подстановка токенов, мерж конфигов, хэш-сверка для `integrations install` / `doctor` |
 | `remind.ts` | Конвейер напоминаний: одна модель `Reminder` над провайдерами-детекторами |
-| `scaffold.ts` | Заготовки с правдивой нумерацией для `new adr/session/feature/...`, генераторы `init` |
+| `links.ts` / `links-run.ts` | Связанные репы: манифест `links.json`, перекрёстные ссылки `id://`, пины sha256+HEAD, зеркала байт-в-байт |
+| `scaffold.ts` | Заготовки с правдивой нумерацией для `new adr/session/feature/research/...`, генераторы `init` |
 
 Обвязки: `cli.ts` (аргументы, ФС, вывод, коды выхода), `registry-run.ts` (SQLite WAL,
 git-хелперы), `integrate-run.ts` (живая установка + smoke-прогон doctor), `bugs-run.ts`
-(сборка/обфускация артефакта, ingest), `visual-run.ts` (оркестрация Playwright).
+(сборка/обфускация артефакта, ingest), `links-run.ts` (пины/зеркала/проверки связей
+на живой ФС), `visual-run.ts` (оркестрация Playwright).
 
 ## Конвейер команд
 
@@ -80,8 +82,9 @@ git-хелперы), `integrate-run.ts` (живая установка + smoke-�
 (разведка / штамп свежести) → `check` (линт, exit 1 для CI) → `map` / `status`
 (регенерация) → `hook install` (pre-commit в целевой репе). От них ответвляются
 профильные контуры: заморозка верстки — `freeze --scan/--file/--staged` + `visual`;
-стейджинг — `bugs emit/ingest`; обвязка харнесса — `integrations install` +
-`doctor`; задачи — `task new/show/start/close` + `board` + `file`.
+стейджинг — `bugs emit/ingest`; связанные репы — `links check/pin/mirror`; обвязка
+харнесса — `integrations install` + `doctor`; задачи — `task new/show/start/close` +
+`board` + `file`.
 
 ## Дистрибуция: один бинарь + сайдкар
 
@@ -94,7 +97,7 @@ CLI компилируется в **одиночный бинарь Node SEA** (
 
 ## Тестирование
 
-- **Юнит-тесты чистого ядра** — основная масса ~300+ тестов; на входе строки,
+- **Юнит-тесты чистого ядра** — основная масса ~380 тестов; на входе строки,
   на выходе строки.
 - **Браузерный E2E** — настоящий Chromium (Playwright) против vite-сборки UI
   с адаптером `MockKernel` вместо Tauri IPC; покрыт каждый экран.
@@ -113,5 +116,6 @@ CLI компилируется в **одиночный бинарь Node SEA** (
 - **[ADR-020](../decisions/adr-020-tauri-sidecar.md)** — SEA-бинарь как сайдкар приложения Tauri
 - **[ADR-021](../decisions/adr-021-reminder-pipeline.md)** — напоминания как один конвейер над провайдерами-детекторами
 - **[ADR-022](../decisions/adr-022-parallel-agents-staging-join.md)** — параллельные агенты: журналы задач стейджинга + идемпотентный join
+- **[ADR-025](../decisions/adr-025-linked-repos-links-json.md)** — связанные репы: ссылки `id://`, пины, зеркала
 
-Все 22 решения опубликованы в [docs/ru/decisions/](../decisions/).
+Все 27 решений опубликованы в [docs/ru/decisions/](../decisions/).
