@@ -27,13 +27,14 @@ assets; the desktop app ships that binary as a sidecar.
 │  skill, slash-commands, hooks, scaffolding, staging overlay    │
 ├────────────────────────────────────────────────────────────────┤
 │  SHELLS (FS / processes / git / node:sqlite):                  │
-│  cli · registry-run · integrate-run · bugs-run · visual-run    │
+│  cli · mcp-run · registry-run · activity-run · integrate-run   │
+│  bugs-run · links-run · visual-run · collect-run               │
 ├────────────────────────────────────────────────────────────────┤
 │  PURE CORE (strings & lists, no node:* imports):               │
 │  util · head · sessions · env · undoc · freeze · scan-ui ·     │
 │  req · check · map · status · brief · visual · specgen ·       │
-│  png · bugs-core · integrations · scaffold · registry ·        │
-│  dirty · remind · sea                                          │
+│  png · bugs-core · integrations · links · features ·           │
+│  dirty · remind · registry · sea · activity · code-intel       │
 └────────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,6 +52,15 @@ registries (tasks, UI-freeze verdicts) live in **SQLite** (`docs/registry.db`) v
 commits cleanly. Bridge commands move freeze-registry rows between markdown and the
 database, so each format stays the source of truth for its kind of data.
 
+Two more stores complete the picture. The **activity journal** (`docs/activity.db`)
+is an append-only SQLite database with an FTS5 index: every state change (freeze
+set/unset, task create/close/tag/verify, pins, installs, analyze, sessions) is
+recorded automatically by the CLI mutators, plus manual events via `devst log add`.
+The journal is history, never state — the registry stays editable, the journal does
+not. The **code index** (`.devst/graph.db`) is a derived, disposable cache built by
+`devst analyze`: it lives outside `docs/`, can be rebuilt at any time, and carries
+no canon.
+
 ## Core modules, briefly
 
 | Module | Responsibility |
@@ -67,12 +77,20 @@ database, so each format stays the source of truth for its kind of data.
 | `integrations.ts` | Target specs, token substitution, config merge, hash verification for `integrations install` / `doctor` |
 | `remind.ts` | Reminder pipeline: one `Reminder` model over provider detectors |
 | `links.ts` / `links-run.ts` | Linked repositories: `links.json` manifest, `id://` cross-links, sha256+HEAD pins, byte-for-byte mirrors |
+| `features.ts` / `capabilities.ts` | Feature gates (`features.*` in devst.json): on/off/auto, neighbor-tool detection feeding `env`/`doctor` recommendations |
+| `activity.ts` | The append-only journal core: event schema, FTS5 search model |
+| `code-intel/` | Code intelligence: parser cascade (own scanner → embedded TypeScript/Lezer/PHP/Lua/Elixir parsers), import graph, blast radius, git analytics, health detectors, symbols, the `audit` revisiting report |
+| `mcp.ts` | The MCP server core: 23 read-only tools over the canon, the registry and code intelligence; `_meta` envelopes (freshness, completeness, truncation) |
 | `scaffold.ts` | Truthful-number stubs for `new adr/session/feature/research/...`, `init` generators |
 
-Shells: `cli.ts` (arguments, FS, output, exit codes), `registry-run.ts` (SQLite WAL,
-git helpers), `integrate-run.ts` (live install + doctor smoke), `bugs-run.ts`
-(artifact build/obfuscation, ingest), `links-run.ts` (pin/mirror checks on the live
-file system), `visual-run.ts` (Playwright orchestration).
+Shells: `cli.ts` (arguments, FS, output, exit codes), `mcp-run.ts` (the stdio
+JSON-RPC server process), `registry-run.ts` (SQLite WAL, git helpers),
+`activity-run.ts` (the journal database), `collect-run.ts` (fact-gathering shared
+by the CLI and MCP — one source, no duplication), `integrate-run.ts` (live install
++ doctor smoke), `bugs-run.ts` (artifact build/obfuscation, ingest), `links-run.ts`
+(pin/mirror checks on the live file system), `visual-run.ts` (Playwright
+orchestration), plus the code-intel runners (`analyze-run.ts`, `health-run.ts`,
+`risk-run.ts`, `symbols-run.ts`… over `graph.db`).
 
 ## Command pipeline
 
@@ -81,20 +99,24 @@ file system), `visual-run.ts` (Playwright orchestration).
 (regeneration) → `hook install` (pre-commit in a target repo). Dedicated circuits
 branch off: UI freezing — `freeze --scan/--file/--staged` + `visual`; staging —
 `bugs emit/ingest`; linked repos — `links check/pin/mirror`; harness wiring —
-`integrations install` + `doctor`; tasks — `task new/show/start/close` + `board` + `file`.
+`integrations install` + `doctor`; tasks — `task new/show/start/close` + `board` +
+`file`; code intelligence — `analyze` + `blast`; the journal — `log add/query`;
+honest bookkeeping — `audit`; agent access — `mcp`.
 
 ## Distribution: single binary + sidecar
 
-The CLI compiles into a **Node SEA single binary** (~88 MB, Windows-first): the
+The CLI compiles into a **Node SEA single binary** (~98 MB, Windows-first): the
 canonical integration templates are embedded as assets, so `integrations install`
 works from the exe with no repository checkout, and hooks dispatch straight to the
-exe without a Node invocation. The Tauri desktop app ships the same exe as a
+exe without a Node invocation. The code parsers for the intelligence layer are
+embedded the same way, each with its version and license in a generated manifest.
+The Tauri desktop app ships the same exe as a
 **sidecar**: task mutations with closure gates from the UI go through the CLI
 process — one implementation of the rules, not two.
 
 ## Testing
 
-- **Pure-core units** — the bulk of the ~380 tests; strings in, strings out.
+- **Pure-core units** — the bulk of the ~500 tests; strings in, strings out.
 - **Browser E2E** — real Chromium (Playwright) against a vite build of the UI with a
   `MockKernel` adapter standing in for Tauri IPC; every screen covered.
 - **Visual regression** — layout snapshots + screen hashes by default, true pixel
@@ -112,5 +134,6 @@ process — one implementation of the rules, not two.
 - **[ADR-021](../decisions/adr-021-reminder-pipeline.md)** — reminders as one pipeline over detector providers
 - **[ADR-022](../decisions/adr-022-parallel-agents-staging-join.md)** — parallel agents: staging task journals + idempotent join
 - **[ADR-025](../decisions/adr-025-linked-repos-links-json.md)** — linked repositories: `id://` links, pins, mirrors
+- **[ADR-028](../decisions/adr-028-parser-cascade-t0-t1-t2.md)** — the code-intelligence parser cascade (T0/T1/T2) and embedded assets
 
-All 27 decision records are published under [docs/decisions/](../decisions/).
+All 28 decision records are published under [docs/decisions/](../decisions/).

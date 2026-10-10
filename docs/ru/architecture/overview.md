@@ -28,13 +28,14 @@ stdlib Node). Всё, что касается внешнего мира, — ф�
 │  skill, slash-commands, hooks, scaffolding, staging overlay    │
 ├────────────────────────────────────────────────────────────────┤
 │  SHELLS (FS / processes / git / node:sqlite):                  │
-│  cli · registry-run · integrate-run · bugs-run · visual-run    │
+│  cli · mcp-run · registry-run · activity-run · integrate-run   │
+│  bugs-run · links-run · visual-run · collect-run               │
 ├────────────────────────────────────────────────────────────────┤
 │  PURE CORE (strings & lists, no node:* imports):               │
 │  util · head · sessions · env · undoc · freeze · scan-ui ·     │
 │  req · check · map · status · brief · visual · specgen ·       │
-│  png · bugs-core · integrations · scaffold · registry ·        │
-│  dirty · remind · sea                                          │
+│  png · bugs-core · integrations · links · features ·           │
+│  dirty · remind · registry · sea · activity · code-intel       │
 └────────────────────────────────────────────────────────────────┘
 ```
 
@@ -53,6 +54,15 @@ stdlib Node). Всё, что касается внешнего мира, — ф�
 заморозки между markdown и базой — каждый формат остаётся источником истины для
 своего вида данных.
 
+Картину дополняют ещё два хранилища. **Журнал действий** (`docs/activity.db`) —
+append-only база SQLite с FTS5-индексом: каждое изменение состояния (freeze
+set/unset, task create/close/tag/verify, пины, установки, analyze, сессии)
+записывается автоматически мутаторами CLI, плюс ручные события через
+`devst log add`. Журнал — история, а не состояние: реестр редактируется, журнал —
+никогда. **Код-индекс** (`.devst/graph.db`) — производный одноразовый кеш,
+собираемый `devst analyze`: живёт вне `docs/`, пересобирается в любой момент и
+канона не содержит.
+
 ## Модули ядра, коротко
 
 | Модуль | Ответственность |
@@ -69,12 +79,20 @@ stdlib Node). Всё, что касается внешнего мира, — ф�
 | `integrations.ts` | Таргет-спеки, подстановка токенов, мерж конфигов, хэш-сверка для `integrations install` / `doctor` |
 | `remind.ts` | Конвейер напоминаний: одна модель `Reminder` над провайдерами-детекторами |
 | `links.ts` / `links-run.ts` | Связанные репы: манифест `links.json`, перекрёстные ссылки `id://`, пины sha256+HEAD, зеркала байт-в-байт |
+| `features.ts` / `capabilities.ts` | Фичи-гейты (`features.*` в devst.json): on/off/auto, детект соседей-инструментов для рекомендаций `env`/`doctor` |
+| `activity.ts` | Ядро append-only журнала: схема событий, модель поиска FTS5 |
+| `code-intel/` | Код-интеллект: каскада парсеров (свой сканер → вшитые парсеры TypeScript/Lezer/PHP/Lua/Elixir), граф импортов, blast-radius, git-аналитика, health-детекторы, символы, отчёт пересмотра `audit` |
+| `mcp.ts` | Ядро MCP-сервера: 23 read-only инструмента над каноном, реестром и код-интеллектом; конверты `_meta` (свежесть, полнота, усечения) |
 | `scaffold.ts` | Заготовки с правдивой нумерацией для `new adr/session/feature/research/...`, генераторы `init` |
 
-Обвязки: `cli.ts` (аргументы, ФС, вывод, коды выхода), `registry-run.ts` (SQLite WAL,
-git-хелперы), `integrate-run.ts` (живая установка + smoke-прогон doctor), `bugs-run.ts`
-(сборка/обфускация артефакта, ingest), `links-run.ts` (пины/зеркала/проверки связей
-на живой ФС), `visual-run.ts` (оркестрация Playwright).
+Обвязки: `cli.ts` (аргументы, ФС, вывод, коды выхода), `mcp-run.ts` (процесс stdio
+JSON-RPC-сервера), `registry-run.ts` (SQLite WAL, git-хелперы), `activity-run.ts`
+(база журнала), `collect-run.ts` (сборщики фактов, общие для CLI и MCP — один
+источник, без дублирования), `integrate-run.ts` (живая установка + smoke-прогон
+doctor), `bugs-run.ts` (сборка/обфускация артефакта, ingest), `links-run.ts`
+(пины/зеркала/проверки связей на живой ФС), `visual-run.ts` (оркестрация
+Playwright) плюс раннеры код-интеллекта (`analyze-run.ts`, `health-run.ts`,
+`risk-run.ts`, `symbols-run.ts`… поверх `graph.db`).
 
 ## Конвейер команд
 
@@ -84,20 +102,22 @@ git-хелперы), `integrate-run.ts` (живая установка + smoke-�
 профильные контуры: заморозка верстки — `freeze --scan/--file/--staged` + `visual`;
 стейджинг — `bugs emit/ingest`; связанные репы — `links check/pin/mirror`; обвязка
 харнесса — `integrations install` + `doctor`; задачи — `task new/show/start/close` +
-`board` + `file`.
+`board` + `file`; код-интеллект — `analyze` + `blast`; журнал — `log add/query`;
+честный учёт — `audit`; агентный доступ — `mcp`.
 
 ## Дистрибуция: один бинарь + сайдкар
 
-CLI компилируется в **одиночный бинарь Node SEA** (~88 МБ, Windows-first):
+CLI компилируется в **одиночный бинарь Node SEA** (~98 МБ, Windows-first):
 канонические шаблоны интеграций зашиты как ассеты, поэтому `integrations install`
 работает прямо из exe без чекаута репозитория, а хуки диспетчеризуются прямо в exe
-без вызова Node. Настольное приложение Tauri поставляет тот же exe как **сайдкар**:
-мутации задач с гейтами закрытия из UI идут через процесс CLI — одна реализация
-правил, а не две.
+без вызова Node. Парсеры кода для слоя интеллекта зашиты так же — каждый со своей
+версией и лицензией в генерируемом манифесте. Настольное приложение Tauri
+поставляет тот же exe как **сайдкар**: мутации задач с гейтами закрытия из UI идут
+через процесс CLI — одна реализация правил, а не две.
 
 ## Тестирование
 
-- **Юнит-тесты чистого ядра** — основная масса ~380 тестов; на входе строки,
+- **Юнит-тесты чистого ядра** — основная масса ~500 тестов; на входе строки,
   на выходе строки.
 - **Браузерный E2E** — настоящий Chromium (Playwright) против vite-сборки UI
   с адаптером `MockKernel` вместо Tauri IPC; покрыт каждый экран.
@@ -117,5 +137,6 @@ CLI компилируется в **одиночный бинарь Node SEA** (
 - **[ADR-021](../decisions/adr-021-reminder-pipeline.md)** — напоминания как один конвейер над провайдерами-детекторами
 - **[ADR-022](../decisions/adr-022-parallel-agents-staging-join.md)** — параллельные агенты: журналы задач стейджинга + идемпотентный join
 - **[ADR-025](../decisions/adr-025-linked-repos-links-json.md)** — связанные репы: ссылки `id://`, пины, зеркала
+- **[ADR-028](../decisions/adr-028-parser-cascade-t0-t1-t2.md)** — каскада парсеров код-интеллекта (T0/T1/T2) и вшитые ассеты
 
-Все 27 решений опубликованы в [docs/ru/decisions/](../decisions/).
+Все 28 решений опубликованы в [docs/ru/decisions/](../decisions/).
