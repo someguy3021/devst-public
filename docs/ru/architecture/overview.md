@@ -34,8 +34,8 @@ stdlib Node). Всё, что касается внешнего мира, — ф�
 │  PURE CORE (strings & lists, no node:* imports):               │
 │  util · head · sessions · env · undoc · freeze · scan-ui ·     │
 │  req · check · map · status · brief · visual · specgen ·       │
-│  png · bugs-core · integrations · links · features ·           │
-│  dirty · remind · registry · sea · activity · code-intel       │
+│  png · bugs-core · integrations · links · features · dirty ·   │
+│  remind · registry · sea · activity · code-intel · arch        │
 └────────────────────────────────────────────────────────────────┘
 ```
 
@@ -48,7 +48,7 @@ stdlib Node). Всё, что касается внешнего мира, — ф�
 
 Осознанный гибрид: человеческая проза (архитектура, фичи, ADR, журналы сессий)
 остаётся в **markdown** — ревьюится в pull request'ах, грепается, диффается.
-Структурированные реестры (задачи, вердикты заморозки верстки) живут в **SQLite**
+Структурированные реестры (задачи, пункты ТЗ фич, вердикты заморозки верстки) живут в **SQLite**
 (`docs/registry.db`) через `node:sqlite`, в режиме WAL с чекпоинтом при записи, так
 что сам файл `.db` коммитится чисто. Мостовые команды переносят строки реестра
 заморозки между markdown и базой — каждый формат остаётся источником истины для
@@ -82,7 +82,8 @@ set/unset, task create/close/tag/verify, пины, установки, analyze, 
 | `features.ts` / `capabilities.ts` | Фичи-гейты (`features.*` в devst.json): on/off/auto, детект соседей-инструментов для рекомендаций `env`/`doctor` |
 | `activity.ts` | Ядро append-only журнала: схема событий, модель поиска FTS5 |
 | `code-intel/` | Код-интеллект: каскада парсеров (свой сканер → вшитые парсеры TypeScript/Lezer/PHP/Lua/Elixir), граф импортов, blast-radius, git-аналитика, health-детекторы, символы, отчёт пересмотра `audit` |
-| `mcp.ts` | Ядро MCP-сервера: 23 read-only инструмента над каноном, реестром и код-интеллектом; конверты `_meta` (свежесть, полнота, усечения) |
+| `arch/` | Модель архитектуры: роли на собственном глобе, матрица рёбер default-deny, контракты узлов; `arch validate/check` по графу кода, генерируемый канон (`02-arch-roles.md`), пресеты FSD/Clean/empty |
+| `mcp.ts` | Ядро MCP-сервера: 25 read-only инструментов над каноном, реестром и код-интеллектом; конверты `_meta` (свежесть, полнота, усечения) |
 | `scaffold.ts` | Заготовки с правдивой нумерацией для `new adr/session/feature/research/...`, генераторы `init` |
 
 Обвязки: `cli.ts` (аргументы, ФС, вывод, коды выхода), `mcp-run.ts` (процесс stdio
@@ -102,8 +103,9 @@ Playwright) плюс раннеры код-интеллекта (`analyze-run.ts
 профильные контуры: заморозка верстки — `freeze --scan/--file/--staged` + `visual`;
 стейджинг — `bugs emit/ingest`; связанные репы — `links check/pin/mirror`; обвязка
 харнесса — `integrations install` + `doctor`; задачи — `task new/show/start/close` +
-`board` + `file`; код-интеллект — `analyze` + `blast`; журнал — `log add/query`;
-честный учёт — `audit`; агентный доступ — `mcp`.
+`board` + `file`; пункты ТЗ — `feature show/done/verify/close`; архитектура —
+`arch init/validate/check`; код-интеллект — `analyze` + `blast`; журнал —
+`log add/query`; честный учёт — `audit`; агентный доступ — `mcp`.
 
 ## Дистрибуция: один бинарь + сайдкар
 
@@ -117,7 +119,7 @@ CLI компилируется в **одиночный бинарь Node SEA** (
 
 ## Тестирование
 
-- **Юнит-тесты чистого ядра** — основная масса ~500 тестов; на входе строки,
+- **Юнит-тесты чистого ядра** — основная масса 569 тестов; на входе строки,
   на выходе строки.
 - **Браузерный E2E** — настоящий Chromium (Playwright) против vite-сборки UI
   с адаптером `MockKernel` вместо Tauri IPC; покрыт каждый экран.
@@ -138,5 +140,7 @@ CLI компилируется в **одиночный бинарь Node SEA** (
 - **[ADR-022](../decisions/adr-022-parallel-agents-staging-join.md)** — параллельные агенты: журналы задач стейджинга + идемпотентный join
 - **[ADR-025](../decisions/adr-025-linked-repos-links-json.md)** — связанные репы: ссылки `id://`, пины, зеркала
 - **[ADR-028](../decisions/adr-028-parser-cascade-t0-t1-t2.md)** — каскада парсеров код-интеллекта (T0/T1/T2) и вшитые ассеты
+- **[ADR-029](../decisions/adr-029-feature-spec-items-as-data.md)** — пункты ТЗ фич как данные с человеческой верификацией
+- **[ADR-030](../decisions/adr-030-architecture-roles-and-boundaries-as-data.md)** — архитектурные роли и границы как данные
 
-Все 28 решений опубликованы в [docs/ru/decisions/](../decisions/).
+Все 31 решение опубликованы в [docs/ru/decisions/](../decisions/).

@@ -9,7 +9,7 @@ AI agents write most of the code.
 ![License: CC BY 4.0](https://img.shields.io/badge/license-CC_BY_4.0-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A522.5-339933?logo=nodedotjs&logoColor=white)
 ![Runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-brightgreen)
-![Tests](https://img.shields.io/badge/tests-500-green)
+![Tests](https://img.shields.io/badge/tests-569-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 [![docs-check](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml/badge.svg)](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml)
 
@@ -43,8 +43,9 @@ linted, freshness-checked, and wired into the AI harness itself.
 |---|---|---|
 | Convention linting | `devst check` | Enforces the documentation standard — headers, map, freshness, cross-references; exits non-zero for CI and pre-commit hooks |
 | Docs map & "Now" panel | `devst map` · `devst status` | Regenerates the documentation map and a five-second state panel: phase, last session, open work |
-| Task registry | `devst task …` · `devst board` | SQLite-backed tasks & questions with links, timers, TTL; **closing runs a gate** that reconciles what the task declared against what the commits show; tags (closed vocabulary + free-form) and five honest verification levels at close — deep / smoke / skim / delegated / blind — recorded with date and actor, revisited by `devst audit` |
-| Agent access (MCP) | `devst mcp` | A local MCP server (stdio JSON-RPC, zero-deps) exposing 23 read-only tools — the "Now" panel, the registry, ADRs, reminders, code intelligence — to agents of **any** harness; wired by `integrations install --mcp`, verified by `doctor`. Every answer carries a `_meta` envelope: freshness, completeness, truncation |
+| Task registry | `devst task …` · `devst board` | SQLite-backed tasks & questions with links, timers, TTL; **closing runs a gate** that reconciles what the task declared against what the commits show; tags (closed vocabulary + free-form) and six honest verification levels at close — deep / smoke / skim / delegated / blind / manual — recorded with date and actor, revisited by `devst audit` |
+| Feature specs | `devst feature …` | Machine-readable spec items per feature, each with a verbatim source quote and task links; the agent marks "done" with proof, a **human confirms** through the same verification inbox; `feature close` refuses with unresolved must-have items |
+| Agent access (MCP) | `devst mcp` | A local MCP server (stdio JSON-RPC, zero-deps) exposing 25 read-only tools — the "Now" panel, the registry, ADRs, reminders, code intelligence — to agents of **any** harness; wired by `integrations install --mcp`, verified by `doctor`. Every answer carries a `_meta` envelope: freshness, completeness, truncation |
 | Environment recon | `devst env` | Scans stack manifests (package.json, Cargo.toml, pyproject, Makefile, compose, CI), drafts the Environment table; CI fails when it goes stale |
 | UI freeze registry | `devst freeze` | Records frozen UI areas (including a **default-deny** mode), validates staged diffs against the registry, guards edits via hooks |
 | Visual baselines | `devst visual` | Layout snapshots + screen hashes; opt-in true pixel diff with a zero-dependency PNG decoder |
@@ -54,7 +55,8 @@ linted, freshness-checked, and wired into the AI harness itself.
 | Linked repos | `devst links check` · `pin` · `mirror` | Tracks related devst repositories: `id://` cross-links, sha256+HEAD pins, digests of the neighbor's session logs, byte-for-byte mirrors — surfaced in reminders and a desktop tab |
 | Activity journal | `devst log add` · `log query` | An append-only SQLite journal (FTS5) of every state change — freeze set/unset, task create/close/tag/verify, pins, installs, analyze — plus manual events; queried from the CLI and via MCP `get_history`. The journal is history, never state: the registry stays editable, the journal does not |
 | Code intelligence | `devst analyze` · `devst blast` | An import/call graph built by a parser cascade — its own scanner for every language, embedded parsers (TypeScript, the Lezer family, PHP, Lua, Elixir) where available — plus blast radius, git analytics (churn, hotspots, ownership), health findings and a 0–10 change risk; clean-room by design, served via MCP and a desktop "Code" panel |
-| Desktop companion | `devst-ui` | Tauri v2 app: "Now" panel, check list, freeze tree with drag-and-drop, task board with tags, the verification inbox (a human confirms `verified` levels — the CLI can only request), the activity journal and a "Code" panel — the same pure core running in the webview |
+| Architecture model | `devst arch init/check` | A machine-readable architecture model — roles, a default-deny import matrix, node contracts; presets from official rulebooks (FSD, Clean Architecture); violations checked over the code graph; a generated canon doc; served via MCP and a desktop tab |
+| Desktop companion | `devst-ui` | Tauri v2 app: "Now" panel, check list, freeze tree with drag-and-drop, task board with tags, the verification inbox (a human confirms `verified` levels — the CLI can only request), the activity journal, a "Code" panel and a side reader panel (markdown, code, images) — the same pure core running in the webview |
 
 ## How a session flows
 
@@ -111,16 +113,16 @@ Details and the module map: [docs/architecture/overview.md](docs/architecture/ov
 
 - [The dev-standard methodology](docs/methodology.md) — the conventions devst enforces
 - [Architecture overview](docs/architecture/overview.md) — layers, storage, distribution, testing
-- [Features](docs/features/) — thirteen feature deep-dives: visual baselines, Bug Hunt, the desktop window, the task registry, reminders, the practice installer, linked repos, the MCP server, actors & roles, code intelligence, task tags & verification, the activity journal, UI-only verification
-- [Decision records](docs/decisions/) — all 28 ADRs, in English
+- [Features](docs/features/) — sixteen feature deep-dives: visual baselines, Bug Hunt, the desktop window, the task registry, reminders, the practice installer, linked repos, the MCP server, actors & roles, code intelligence, task tags & verification, the activity journal, UI-only verification, spec items as data, the reader panel, architecture roles & boundaries
+- [Decision records](docs/decisions/) — all 31 ADRs, in English
 - [Русская версия](docs/ru/README.md) — полное зеркало документации (английский — источник истины)
 
 ## Engineering highlights
 
 - **0 runtime dependencies** — Node stdlib only; strict `tsc` green.
-- **500 automated tests**, including real-Chromium E2E of every desktop screen
+- **569 automated tests**, including real-Chromium E2E of every desktop screen
   (Playwright against a vite build with a `MockKernel` adapter).
-- **28 recorded ADRs** — every architectural decision documented, superseded ones
+- **31 recorded ADRs** — every architectural decision documented, superseded ones
   preserved, never renumbered.
 - **One self-contained binary** (Node SEA, ~98 MB, with embedded code parsers) +
   desktop sidecar: one implementation of the rules, not two.

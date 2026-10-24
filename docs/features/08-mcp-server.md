@@ -2,10 +2,10 @@
 
 > [Русская версия](../ru/features/08-mcp-server.md)
 
-> **Status:** Read-only surface implemented (23 tools) · **Updated:** 2026-10-10
+> **Status:** Read-only surface implemented (25 tools) · **Updated:** 2026-10-24
 > **Essence:** the `devst mcp` subcommand runs a local MCP server (stdio JSON-RPC, zero runtime dependencies, on top of the SEA binary) and gives agents of any harness typed access to the canon: the "Now" panel, the task registry, ADRs, the docs map, neighbor links. Read-only was stage one; mutations are a separate stage behind a gate, with mandatory actor attribution ([Feature 09](./09-actors-and-roles.md)).
 > **Key facts:**
-> - 23 tools cover the agent-facing CLI surface: hygiene/canon (`get_map/brief/reminders/uncommitted/undocumented/features`, `check_docs`), the registry and environment (`get_panel/board/task/decisions/links/env/audit`), code intelligence (`analyze`, `get_overview/context/blast_radius/risk/health/history/symbols/file`).
+> - 25 tools cover the agent-facing CLI surface (23 at launch, 2 added since): hygiene/canon (`get_map/brief/reminders/uncommitted/undocumented/features`, `check_docs`), the registry and environment (`get_panel/board/task/decisions/links/env/audit/feature_items`), code intelligence and architecture (`analyze`, `get_arch_model`, `get_overview/context/blast_radius/risk/health/history/symbols/file`).
 > - Transport is stdio JSON-RPC 2.0 (newline-delimited); the server lives exactly as long as the harness session — no daemon, no network. Sources of truth (docs/, the registry) are read on every call: no cache, hence nothing to go stale.
 > - Every answer carries a `_meta` envelope — freshness/completeness/truncation; a `_meta.stale_warning` hint pushes the agent to re-run `devst analyze`.
 > - Zero-deps implementation on Node stdlib (`src/mcp-run.ts`); fact-gathering is shared with the CLI (`src/collect-run.ts`) — one source, no duplication. Wiring: `devst integrations install --mcp` with a `doctor` check.

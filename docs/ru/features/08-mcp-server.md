@@ -2,7 +2,7 @@
 
 > Русский · [English](../../features/08-mcp-server.md)
 
-> **Статус:** Read-only поверхность реализована (23 инструмента) · **Обновлено:** 2026-10-10
+> **Статус:** Read-only поверхность реализована (25 инструментов) · **Обновлено:** 2026-10-24
 
 **Суть:** подкоманда `devst mcp` поднимает локальный MCP-сервер (stdio, JSON-RPC,
 zero runtime-deps, на базе SEA-бинаря) и даёт агентам любых харнессов
@@ -12,10 +12,11 @@ zero runtime-deps, на базе SEA-бинаря) и даёт агентам л
 
 **Ключевые факты:**
 
-- 23 инструмента покрывают агентную поверхность CLI: гигиена/канон
-  (`get_map/brief/reminders/uncommitted/undocumented/features`, `check_docs`),
-  реестр и окружение (`get_panel/board/task/decisions/links/env/audit`),
-  код-интеллект (`analyze`,
+- 25 инструментов покрывают агентную поверхность CLI (23 на старте, 2 добавились):
+  гигиена/канон (`get_map/brief/reminders/uncommitted/undocumented/features`,
+  `check_docs`), реестр и окружение
+  (`get_panel/board/task/decisions/links/env/audit/feature_items`),
+  код-интеллект и архитектура (`analyze`, `get_arch_model`,
   `get_overview/context/blast_radius/risk/health/history/symbols/file`).
 - Транспорт — stdio JSON-RPC 2.0 (newline-delimited); сервер живёт ровно столько,
   сколько жива сессия харнесса — без демона, без сети. Источники правды (docs/ и

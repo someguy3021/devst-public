@@ -33,8 +33,8 @@ assets; the desktop app ships that binary as a sidecar.
 │  PURE CORE (strings & lists, no node:* imports):               │
 │  util · head · sessions · env · undoc · freeze · scan-ui ·     │
 │  req · check · map · status · brief · visual · specgen ·       │
-│  png · bugs-core · integrations · links · features ·           │
-│  dirty · remind · registry · sea · activity · code-intel       │
+│  png · bugs-core · integrations · links · features · dirty ·   │
+│  remind · registry · sea · activity · code-intel · arch        │
 └────────────────────────────────────────────────────────────────┘
 ```
 
@@ -47,7 +47,7 @@ green with zero runtime dependencies.
 
 A deliberate hybrid: human prose (architecture, features, ADRs, session logs) stays
 in **markdown** — reviewable in pull requests, greppable, diffable. Structured
-registries (tasks, UI-freeze verdicts) live in **SQLite** (`docs/registry.db`) via
+registries (tasks, feature spec items, UI-freeze verdicts) live in **SQLite** (`docs/registry.db`) via
 `node:sqlite`, in WAL mode with a checkpoint on write so the `.db` file itself
 commits cleanly. Bridge commands move freeze-registry rows between markdown and the
 database, so each format stays the source of truth for its kind of data.
@@ -80,7 +80,8 @@ no canon.
 | `features.ts` / `capabilities.ts` | Feature gates (`features.*` in devst.json): on/off/auto, neighbor-tool detection feeding `env`/`doctor` recommendations |
 | `activity.ts` | The append-only journal core: event schema, FTS5 search model |
 | `code-intel/` | Code intelligence: parser cascade (own scanner → embedded TypeScript/Lezer/PHP/Lua/Elixir parsers), import graph, blast radius, git analytics, health detectors, symbols, the `audit` revisiting report |
-| `mcp.ts` | The MCP server core: 23 read-only tools over the canon, the registry and code intelligence; `_meta` envelopes (freshness, completeness, truncation) |
+| `arch/` | The architecture model: roles over an in-house glob, a default-deny edge matrix, node contracts; `arch validate/check` over the code graph, the generated canon (`02-arch-roles.md`), the FSD/Clean/empty presets |
+| `mcp.ts` | The MCP server core: 25 read-only tools over the canon, the registry and code intelligence; `_meta` envelopes (freshness, completeness, truncation) |
 | `scaffold.ts` | Truthful-number stubs for `new adr/session/feature/research/...`, `init` generators |
 
 Shells: `cli.ts` (arguments, FS, output, exit codes), `mcp-run.ts` (the stdio
@@ -100,8 +101,9 @@ orchestration), plus the code-intel runners (`analyze-run.ts`, `health-run.ts`,
 branch off: UI freezing — `freeze --scan/--file/--staged` + `visual`; staging —
 `bugs emit/ingest`; linked repos — `links check/pin/mirror`; harness wiring —
 `integrations install` + `doctor`; tasks — `task new/show/start/close` + `board` +
-`file`; code intelligence — `analyze` + `blast`; the journal — `log add/query`;
-honest bookkeeping — `audit`; agent access — `mcp`.
+`file`; feature specs — `feature show/done/verify/close`; architecture —
+`arch init/validate/check`; code intelligence — `analyze` + `blast`; the journal —
+`log add/query`; honest bookkeeping — `audit`; agent access — `mcp`.
 
 ## Distribution: single binary + sidecar
 
@@ -116,7 +118,7 @@ process — one implementation of the rules, not two.
 
 ## Testing
 
-- **Pure-core units** — the bulk of the ~500 tests; strings in, strings out.
+- **Pure-core units** — the bulk of the 569 tests; strings in, strings out.
 - **Browser E2E** — real Chromium (Playwright) against a vite build of the UI with a
   `MockKernel` adapter standing in for Tauri IPC; every screen covered.
 - **Visual regression** — layout snapshots + screen hashes by default, true pixel
@@ -135,5 +137,7 @@ process — one implementation of the rules, not two.
 - **[ADR-022](../decisions/adr-022-parallel-agents-staging-join.md)** — parallel agents: staging task journals + idempotent join
 - **[ADR-025](../decisions/adr-025-linked-repos-links-json.md)** — linked repositories: `id://` links, pins, mirrors
 - **[ADR-028](../decisions/adr-028-parser-cascade-t0-t1-t2.md)** — the code-intelligence parser cascade (T0/T1/T2) and embedded assets
+- **[ADR-029](../decisions/adr-029-feature-spec-items-as-data.md)** — feature spec items as data, verified by a human
+- **[ADR-030](../decisions/adr-030-architecture-roles-and-boundaries-as-data.md)** — architecture roles and boundaries as data
 
-All 28 decision records are published under [docs/decisions/](../decisions/).
+All 31 decision records are published under [docs/decisions/](../decisions/).
