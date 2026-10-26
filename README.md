@@ -9,7 +9,7 @@ AI agents write most of the code.
 ![License: CC BY 4.0](https://img.shields.io/badge/license-CC_BY_4.0-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A522.5-339933?logo=nodedotjs&logoColor=white)
 ![Runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-brightgreen)
-![Tests](https://img.shields.io/badge/tests-569-green)
+![Tests](https://img.shields.io/badge/tests-571-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 [![docs-check](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml/badge.svg)](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml)
 
@@ -114,13 +114,13 @@ Details and the module map: [docs/architecture/overview.md](docs/architecture/ov
 - [The dev-standard methodology](docs/methodology.md) — the conventions devst enforces
 - [Architecture overview](docs/architecture/overview.md) — layers, storage, distribution, testing
 - [Features](docs/features/) — sixteen feature deep-dives: visual baselines, Bug Hunt, the desktop window, the task registry, reminders, the practice installer, linked repos, the MCP server, actors & roles, code intelligence, task tags & verification, the activity journal, UI-only verification, spec items as data, the reader panel, architecture roles & boundaries
-- [Decision records](docs/decisions/) — all 31 ADRs, in English
+- [Decision records](docs/decisions/) — all 32 ADRs, in English
 - [Русская версия](docs/ru/README.md) — полное зеркало документации (английский — источник истины)
 
 ## Engineering highlights
 
 - **0 runtime dependencies** — Node stdlib only; strict `tsc` green.
-- **569 automated tests**, including real-Chromium E2E of every desktop screen
+- **571 automated tests**, including real-Chromium E2E of every desktop screen
   (Playwright against a vite build with a `MockKernel` adapter).
 - **31 recorded ADRs** — every architectural decision documented, superseded ones
   preserved, never renumbered.

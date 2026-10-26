@@ -118,7 +118,7 @@ process — one implementation of the rules, not two.
 
 ## Testing
 
-- **Pure-core units** — the bulk of the 569 tests; strings in, strings out.
+- **Pure-core units** — the bulk of the 571 tests; strings in, strings out.
 - **Browser E2E** — real Chromium (Playwright) against a vite build of the UI with a
   `MockKernel` adapter standing in for Tauri IPC; every screen covered.
 - **Visual regression** — layout snapshots + screen hashes by default, true pixel

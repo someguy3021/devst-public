@@ -9,7 +9,7 @@
 ![License: CC BY 4.0](https://img.shields.io/badge/license-CC_BY_4.0-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A522.5-339933?logo=nodedotjs&logoColor=white)
 ![Runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-brightgreen)
-![Tests](https://img.shields.io/badge/tests-569-green)
+![Tests](https://img.shields.io/badge/tests-571-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 [![docs-check](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml/badge.svg)](https://github.com/someguy3021/devst-public/actions/workflows/docs-check.yml)
 
@@ -115,14 +115,14 @@ SQLite, процессы) → то же ядро, исполняемое в ве
 - [Методология dev-standard](./methodology.md) — конвенции, которые обеспечивает devst
 - [Обзор архитектуры](./architecture/overview.md) — слои, хранилище, дистрибуция, тестирование
 - [Фичи](./features/) — шестнадцать глубоких разборов: визуальные базлайны, Bug Hunt, десктоп-окно, реестр задач, напоминания, установщик практик, связанные репы, MCP-сервер, актёры и роли, код-интеллект, теги задач и верификация, журнал действий, верификация только через UI, пункты ТЗ как данные, панель чтения, архитектурные роли и границы
-- [Решения (ADR)](./decisions/) — все 31 ADR (на английском)
+- [Решения (ADR)](./decisions/) — все 32 ADR (на английском)
 
 Английская версия — источник истины: [README](../../README.md).
 
 ## Инженерные факты
 
 - **0 runtime-зависимостей** — только stdlib Node; строгий `tsc` зелёный.
-- **569 автотестов**, включая E2E на реальном Chromium для каждого экрана
+- **571 автотестов**, включая E2E на реальном Chromium для каждого экрана
   десктопа (Playwright против vite-сборки с адаптером `MockKernel`).
 - **31 записанный ADR** — каждое архитектурное решение задокументировано,
   вытесненные сохранены, нумерация никогда не меняется.
